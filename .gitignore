@@ -127,3 +127,14 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Test and training data
+training/
+test/
+
+# Trained model and predictions
+model.npy
+PREDICTIONS.csv
+
+# VS Code Data
+.vscode/
