@@ -1,29 +1,32 @@
+# -*- coding: utf-8 -*-
+"""
+Beispiel Code und  Spielwiese
+
+"""
+
+
 import csv
 import scipy.io as sio
 import matplotlib.pyplot as plt
 import numpy as np
 from ecgdetectors import Detectors
 import os
+from wettbewerb import load_references
 
-fs = 300                                                  # Sampling-Frequenz 300 Hz
+ecg_leads,ecg_labels,fs,ecg_names = load_references() # Importiere EKG-Dateien, zugehörige Diagnose, Sampling-Frequenz (Hz) und Name                                                # Sampling-Frequenz 300 Hz
+
 detectors = Detectors(fs)                                 # Initialisierung des QRS-Detektors
 sdnn_normal = np.array([])                                # Initialisierung der Feature-Arrays
 sdnn_afib = np.array([])
-with open('training/REFERENCE.csv') as csv_file:          # Einlesen der Liste mit Dateinamen und Zuordnung
-    csv_reader = csv.reader(csv_file, delimiter=',')
-    line_count = 0
-    for row in csv_reader:
-      data = sio.loadmat('training/'+row[0]+'.mat')       # Import der EKG-Dateien
-      ecg_lead = data['val'][0]
-      r_peaks = detectors.hamilton_detector(ecg_lead)     # Detektion der QRS-Komplexe
-      sdnn = np.std(np.diff(r_peaks)/fs*1000)             # Berechnung der Standardabweichung der Schlag-zu-Schlag Intervalle (SDNN) in Millisekunden
-      if row[1]=='N':
-        sdnn_normal = np.append(sdnn_normal,sdnn)         # Zuordnung zu "Normal"
-      if row[1]=='A':
-        sdnn_afib = np.append(sdnn_afib,sdnn)             # Zuordnung zu "Vorhofflimmern"
-      line_count = line_count + 1
-      if (line_count % 100)==0:
-        print(str(line_count) + "\t Dateien wurden verarbeitet.")
+for idx, ecg_lead in enumerate(ecg_leads):
+    r_peaks = detectors.hamilton_detector(ecg_lead)     # Detektion der QRS-Komplexe
+    sdnn = np.std(np.diff(r_peaks)/fs*1000)             # Berechnung der Standardabweichung der Schlag-zu-Schlag Intervalle (SDNN) in Millisekunden
+    if ecg_labels[idx]=='N':
+      sdnn_normal = np.append(sdnn_normal,sdnn)         # Zuordnung zu "Normal"
+    if ecg_labels[idx]=='A':
+      sdnn_afib = np.append(sdnn_afib,sdnn)             # Zuordnung zu "Vorhofflimmern"
+    if (idx % 100)==0:
+      print(str(idx) + "\t EKG Signale wurden verarbeitet.")
 
 fig, axs = plt.subplots(2,1, constrained_layout=True)
 axs[0].hist(sdnn_normal,2000)
