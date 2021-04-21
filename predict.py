@@ -1,3 +1,12 @@
+# -*- coding: utf-8 -*-
+"""
+
+Skript testet das vortrainierte Modell
+
+
+@author: Christoph Hoog Antink, Maurice Rohr
+"""
+
 import csv
 import scipy.io as sio
 import matplotlib.pyplot as plt
@@ -8,8 +17,6 @@ import os
 ###Signatur der Methode (Parameter und Anzahl return-Werte) darf nicht verändert werden
 def predict_labels(model_name,ecg_leads,fs,ecg_names):
     '''
-    
-
     Parameters
     ----------
     model_name : str
