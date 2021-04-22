@@ -114,25 +114,30 @@ def score():
     sum_p = Np + Ap + Op + Pp
    
     F1 = TP / (TP + 1/2*(FP+FN)) 
+
+
     
-    F1n=0
-    F1a=0 
-    F1o=0
-    F1p=0
+    F1_mult = 0
+    n_f1_mult = 0
     
-    if (sum_N + sum_n)!=0 :
-       F1n = 2 * Nn / (sum_N + sum_n)
+    ### F1 Teilscore für "normalen Fall", Idee wieso wir diesen weglassen?
+    # if (sum_N + sum_n)!=0 :
+    #     F1_mult += 2 * Nn / (sum_N + sum_n)
+    #     n_f1_mult += 1
    
     if (sum_A + sum_a)!=0 :
-       F1a = 2 * Aa / (sum_A + sum_a)
+        F1_mult += 2 * Aa / (sum_A + sum_a)
+        n_f1_mult += 1
    
     if (sum_O + sum_o)!=0 : 
-       F1o = 2 * Oo / (sum_O + sum_o)
+        F1_mult += 2 * Oo / (sum_O + sum_o)
+        n_f1_mult += 1
    
-    if (sum_P + sum_p)!=0 :
-       F1p = 2 * Pp / (sum_P + sum_p)
+    if (sum_P + sum_p)!=0 :    
+        F1_mult += 2 * Pp / (sum_P + sum_p)
+        n_f1_mult += 1
     
-    F1_mult = (F1n + F1a + F1o + F1p) / 4
+    F1_mult = F1_mult/n_f1_mult
     
     
     
