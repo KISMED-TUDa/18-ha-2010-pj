@@ -120,10 +120,10 @@ def score():
     F1_mult = 0
     n_f1_mult = 0
     
-    ### F1 Teilscore für "normalen Fall", Idee wieso wir diesen weglassen?
-    # if (sum_N + sum_n)!=0 :
-    #     F1_mult += 2 * Nn / (sum_N + sum_n)
-    #     n_f1_mult += 1
+    
+    if (sum_N + sum_n)!=0 :
+         F1_mult += 2 * Nn / (sum_N + sum_n)
+         n_f1_mult += 1
    
     if (sum_A + sum_a)!=0 :
         F1_mult += 2 * Aa / (sum_A + sum_a)
