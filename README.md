@@ -25,4 +25,4 @@ Die Dateien
 
 werden von uns beim testen auf den ursprünglichen Stand zurückgesetzt. Es ist deshalb nicht empfehlenswert diese zu verändern.
 
-Bitte alle verwendeten packages in "requirements.txt" bei der Abgabe zur Evaluation angeben.
+Bitte alle verwendeten packages in "requirements.txt" bei der Abgabe zur Evaluation angeben. Wir selbst verwenden Python 3.8. Wenn es ein Paket gibt, welches nur unter einer anderen Version funktioniert ist das auch in Ordung. In dem Fall bitte Python-Version mit angeben.
