@@ -15,7 +15,7 @@ from ecgdetectors import Detectors
 import os
 
 ###Signatur der Methode (Parameter und Anzahl return-Werte) darf nicht verändert werden
-def predict_labels(model_name,ecg_leads,fs,ecg_names):
+def predict_labels(ecg_leads,fs,ecg_names,use_pretrained=False):
     '''
     Parameters
     ----------
@@ -35,8 +35,10 @@ def predict_labels(model_name,ecg_leads,fs,ecg_names):
     '''
 
 #------------------------------------------------------------------------------
-# Euer Code ab hier     
-    
+# Euer Code ab hier  
+    model_name = "model.npy"   
+    if use_pretrained:
+        model_name = "model_pretrained.npy"
     with open(model_name, 'rb') as f:  
         th_opt = np.load(f)         # Lade simples Model (1 Parameter)
 
