@@ -13,28 +13,29 @@ import numpy as np
 import os
 
 
-### Achtung! Diese Funktion nicht verändern.
+### Achtung! Diese Funktion nicht veraendern.
 
 def load_references(folder: str = '../training') -> Tuple[List[np.ndarray], List[str], int, List[str]]:
     """
     Parameters
     ----------
-    folder : TYPE, optional
-        Ort der Trainingsdaten. The default is '../training/'.
+    folder : str, optional
+        Ort der Trainingsdaten. Default Wert '../training'.
 
     Returns
     -------
     ecg_leads : List[np.ndarray]
         EKG Signale.
     ecg_labels : List[str]
-        gleiche Laenge wie ecg_leads. Werte: 'N','A','O','~'
+        Gleiche Laenge wie ecg_leads. Werte: 'N','A','O','~'
     fs : int
         Sampling Frequenz.
     ecg_names : List[str]
+        Name der geladenen Dateien
     """
     # Check Parameter
     assert isinstance(folder, str), "Parameter folder muss ein string sein aber {} gegeben".format(type(folder))
-    assert os.path.exists(folder), "Parameter folder existiert nicht!"
+    assert os.path.exists(folder), 'Parameter folder existiert nicht!'
     # Initialisiere Listen für leads, labels und names
     ecg_leads: List[np.ndarray] = []
     ecg_labels: List[str] = []
@@ -42,7 +43,7 @@ def load_references(folder: str = '../training') -> Tuple[List[np.ndarray], List
     # Setze sampling Frequenz
     fs: int = 300
     # Lade references Datei
-    with open(folder + 'REFERENCE.csv') as csv_file:
+    with open(os.path.join(folder, 'REFERENCE.csv')) as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
         # Iteriere über jede Zeile
         for row in csv_reader:
@@ -56,7 +57,7 @@ def load_references(folder: str = '../training') -> Tuple[List[np.ndarray], List
     return ecg_leads, ecg_labels, fs, ecg_names
 
 
-### Achtung! Diese Funktion nicht verändern.
+### Achtung! Diese Funktion nicht veraendern.
 
 def save_predictions(predictions: List[Tuple[str, str]]) -> None:
     """
@@ -64,23 +65,22 @@ def save_predictions(predictions: List[Tuple[str, str]]) -> None:
     Parameters
     ----------
     predictions : List[Tuple[str, str]]
-        List aus Tuplen wobei jedes Tuple den Name der Datei und das vorhergesagte label ('N','A','O','~') enthält
+        List aus Tuplen wobei jedes Tuple den Name der Datei und das vorhergesagte label ('N','A','O','~') enthaelt
         Beispiel [('train_ecg_03183.mat', 'N'), ('train_ecg_03184.mat', "~"), ('train_ecg_03185.mat', 'A'),
                   ('train_ecg_03186.mat', 'N'), ('train_ecg_03187.mat', 'O')]
     Returns
     -------
     None.
-
     """
     # Check Parameter
     assert isinstance(predictions, list), \
         "Parameter predictions muss eine Liste sein aber {} gegenen.".format(type(predictions))
-    assert len(predictions) > 0, "Parameter predictions muss eine nicht leere Liste sein."
+    assert len(predictions) > 0, 'Parameter predictions muss eine nicht leere Liste sein.'
     assert isinstance(predictions[0], tuple), \
         "Elemente der Liste predictions muss ein Tuple sein aber {} gegenen.".format(type(predictions[0]))
-    # Check ob Datei schon existiert wenn ja lösche Datei
-    if os.path.exists("PREDICTIONS.csv"):
-        os.remove("PREDICTIONS.csv")
+    # Check ob Datei schon existiert wenn ja loesche Datei
+    if os.path.exists('PREDICTIONS.csv'):
+        os.remove('PREDICTIONS.csv')
     # Generiere neue Datei
     with open('PREDICTIONS.csv', mode='w', newline='') as predictions_file:
         # Init CSV writer um Datei zu beschreiben
@@ -89,4 +89,4 @@ def save_predictions(predictions: List[Tuple[str, str]]) -> None:
         for prediction in predictions:
             predictions_writer.writerow([prediction[0], prediction[1]])
         # Gebe Info aus wie viele labels (predictions) gespeichert werden
-        print(str(len(predictions)) + "\t Labels wurden geschrieben.")
+        print("{}\t Labels wurden geschrieben.".format(len(predictions)))
