@@ -3,16 +3,16 @@ import sys
 import pandas as pd
 
 
-def score():
+def score(test_dir='../test/'):
         
     if not os.path.exists("PREDICTIONS.csv"):
         sys.exit("Es gibt keine Predictions")  
 
-    if  not os.path.exists("../test/REFERENCE.csv"):
+    if  not os.path.exists(test_dir + "REFERENCE.csv"):
         sys.exit("Es gibt keine Ground Truth")  
 
     df_pred = pd.read_csv("PREDICTIONS.csv", header=None)   # Klassifikationen
-    df_gt = pd.read_csv("../test/REFERENCE.csv", header=None)  # Wahrheit
+    df_gt = pd.read_csv(test_dir + "REFERENCE.csv", header=None)  # Wahrheit
 
     N_files = df_gt.shape[0]    # Anzahl an Datenpunkten
 
@@ -55,11 +55,11 @@ def score():
   
         if gt_class == "A" and pred_class == "A":
             TP = TP + 1
-        if gt_class == "N" and pred_class == "N":
+        if gt_class == "N" and pred_class != "A":
             TN = TN + 1
         if gt_class == "N" and pred_class == "A":
             FP = FP + 1
-        if gt_class == "A" and pred_class == "N":
+        if gt_class == "A" and pred_class != "A":
             FN = FN + 1
   
   
@@ -116,7 +116,12 @@ def score():
     F1 = TP / (TP + 1/2*(FP+FN)) 
 
 
-    
+    # Confusion Matrix zur Evaluation
+    Conf_Matrix = {'N':{'n':Nn,'a':Na,'o':No,'p':Np},
+               'A':{'n':An,'a':Aa,'o':Ao,'p':Ap},
+               'O':{'n':On,'a':Oa,'o':Oo,'p':Op},
+               'P':{'n':Pn,'a':Pa,'o':Po,'p':Pp}}
+
     F1_mult = 0
     n_f1_mult = 0
     
@@ -141,10 +146,10 @@ def score():
     
     
     
-    return F1,F1_mult
+    return F1,F1_mult,Conf_Matrix
 
 if __name__=='__main__':
-    F1,F1_mult = score()
+    F1,F1_mult,Conf_Matrix = score()
     print("F1:",F1,"\t MultilabelScore:",F1_mult)
 
 
