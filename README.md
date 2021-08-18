@@ -13,7 +13,7 @@ Demo-Code zu "Wettbewerb künstliche Intelligenz in der Medizin" SoSe 2021
     ...]
     </code></pre>
 
-4. Python Environment anlegen, dann kann "requirements.txt" mit '''pip install -r requirements.txt''' ausgeführt werden und installiert die notwendigen Pakete 
+4. Python Environment anlegen, dann kann "requirements.txt" mit `pip install -r requirements.txt` ausgeführt werden und installiert die notwendigen Pakete 
 
 ## Wichtig!
 
