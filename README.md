@@ -3,9 +3,9 @@ Demo-Code zu "Wettbewerb künstliche Intelligenz in der Medizin" SoSe 2021
 
 ## Erste Schritte
 
-1. dieses Repository klonen
-2. eigenes Repository auf github oder gitlab einrichten
-3. textdatei "teamname.txt" im top Ordner erstellen mit
+1. Dieses Repository klonen
+2. Eigenes Repository auf github oder gitlab einrichten
+3. textdatei "teamname.txt" im top Ordner mit vorgegebener Struktur mit eigenem Teamnamen anpassen
     <pre><code>"teamname.txt":
     [Euer Teamname]
     [Vorname Nachname
@@ -13,7 +13,7 @@ Demo-Code zu "Wettbewerb künstliche Intelligenz in der Medizin" SoSe 2021
     ...]
     </code></pre>
 
-4. loslegen
+4. Python Environment anlegen, dann kann "requirements.txt" mit '''pip install -r requirements.txt''' ausgeführt werden und installiert die notwendigen Pakete 
 
 ## Wichtig!
 
