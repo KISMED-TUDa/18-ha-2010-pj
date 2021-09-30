@@ -36,11 +36,11 @@ def load_references(folder='../training/'):
     ecg_labels = list()
     ecg_names = list()
     fs=300
-    with open(folder +'REFERENCE.csv') as csv_file: # Einlesen der Liste mit Dateinamen und Zuordnung
+    with open(os.path.join(folder,'REFERENCE.csv')) as csv_file: # Einlesen der Liste mit Dateinamen und Zuordnung
         csv_reader = csv.reader(csv_file, delimiter=',')
         line_count = 0
         for row in csv_reader:
-            data = sio.loadmat(folder +row[0] +'.mat')       # Import der EKG-Dateien
+            data = sio.loadmat(os.path.join(folder,row[0] +'.mat'))       # Import der EKG-Dateien
             ecg_lead = data['val'][0]
             label = row[1]
             ecg_leads.append(ecg_lead)
@@ -52,7 +52,7 @@ def load_references(folder='../training/'):
 
 ### Achtung! Diese Funktion nicht verändern.
 
-def save_predictions(predictions):
+def save_predictions(predictions,folder=None):
     '''
     Speichert Prädiktion in CSV-Datei
     Parameters
@@ -65,10 +65,15 @@ def save_predictions(predictions):
     None.
 
     '''    
-    if os.path.exists("PREDICTIONS.csv"):
-        os.remove("PREDICTIONS.csv")
+    if folder==None:
+        file = "PREDICTIONS.csv"
+    else:
+        file = os.path.joint(folder, "PREDICTIONS.csv")
+        
+    if os.path.exists(file):
+        os.remove(file)
 
-    with open('PREDICTIONS.csv', mode='w', newline='') as predictions_file:
+    with open(file, mode='w', newline='') as predictions_file:
         predictions_writer = csv.writer(predictions_file, delimiter=',')
         for prediction in predictions:
             predictions_writer.writerow([prediction[0], prediction[1]])

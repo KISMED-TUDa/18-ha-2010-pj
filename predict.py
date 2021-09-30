@@ -15,7 +15,7 @@ from ecgdetectors import Detectors
 import os
 
 ###Signatur der Methode (Parameter und Anzahl return-Werte) darf nicht verändert werden
-def predict_labels(ecg_leads,fs,ecg_names,use_pretrained=False):
+def predict_labels(ecg_leads,fs,ecg_names,use_pretrained=False,model_name='some_model',is_binary_classifier=False):
     '''
     Parameters
     ----------
