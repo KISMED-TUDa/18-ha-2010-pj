@@ -13,9 +13,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 from ecgdetectors import Detectors
 import os
+from typing import List, Tuple
 
 ###Signatur der Methode (Parameter und Anzahl return-Werte) darf nicht verändert werden
-def predict_labels(ecg_leads,fs,ecg_names,use_pretrained=False,model_name='some_model',is_binary_classifier=False):
+def predict_labels(ecg_leads : List[np.ndarray], fs : float, ecg_names : List[str], model_name : str='model.npy',is_binary_classifier : bool=False) -> List[Tuple[str,str]]:
     '''
     Parameters
     ----------
@@ -27,7 +28,11 @@ def predict_labels(ecg_leads,fs,ecg_names,use_pretrained=False,model_name='some_
         Sampling-Frequenz der Signale.
     ecg_names : list of str
         eindeutige Bezeichnung für jedes EKG-Signal.
-
+    model_name : str
+        Name des Models, kann verwendet werden um korrektes Model aus Ordner zu laden
+    is_binary_classifier : bool
+        Falls getrennte Modelle für F1 und Multi-Score trainiert werden, wird hier übergeben, 
+        welches benutzt werden soll
     Returns
     -------
     predictions : list of tuples
@@ -36,9 +41,6 @@ def predict_labels(ecg_leads,fs,ecg_names,use_pretrained=False,model_name='some_
 
 #------------------------------------------------------------------------------
 # Euer Code ab hier  
-    model_name = "model.npy"   
-    if use_pretrained:
-        model_name = "model_pretrained.npy"
     with open(model_name, 'rb') as f:  
         th_opt = np.load(f)         # Lade simples Model (1 Parameter)
 
