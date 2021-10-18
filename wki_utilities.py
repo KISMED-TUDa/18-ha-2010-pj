@@ -49,7 +49,7 @@ class Database:
         for x in self.cursor:
             print(x)
             
-    def put_scored_entry(self,dataset_nr: int,team_nr: int,run_count_team: int,f1_score: float,multi_score: float,model_nr: int,run_time: int,confusion_matrix: Dict[int]=None) -> int:
+    def put_scored_entry(self,dataset_nr: int,team_nr: int,run_count_team: int,f1_score: float,multi_score: float,model_nr: int,run_time: int,confusion_matrix: Dict[str,int]=None) -> int:
         '''
     
         Parameters
@@ -91,7 +91,7 @@ class Database:
         
         return entry_id
         
-    def put_confusion_matrix(self,run_id: int,confusion_matrix: Dict[int]) -> int:
+    def put_confusion_matrix(self,run_id: int,confusion_matrix: Dict[str,int]) -> int:
         if confusion_matrix != None:
             cursor = self.mydb.cursor()
             content = [run_id]
@@ -129,7 +129,7 @@ class Database:
         return entry_id
         
         
-    def put_model(self,team_nr: int,model_name: str,is_binary_classifier: bool,parameter_dict: Dict[any]) -> int:
+    def put_model(self,team_nr: int,model_name: str,is_binary_classifier: bool,parameter_dict: Dict[str,any]) -> int:
         
         parameters = json.dumps(parameter_dict,indent=4)
         
