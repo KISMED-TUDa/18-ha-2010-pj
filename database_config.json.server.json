@@ -1,7 +1,0 @@
-{
-    "USER": "wki_worker",
-    "PASSWORD": "wettbewerbKI",
-    "HOST": "130.83.56.68",
-    "PORT": "3309",
-    "DATABASE":"wki_main"
-}
