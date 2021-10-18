@@ -17,24 +17,29 @@ if __name__=='__main__':
     parser.add_argument('output_dir', action='store',type=str)
     parser.add_argument('data_set', action='store',type=str)
     parser.add_argument('--test_dir', action='store',type=str,default='../test/')
+    parser.add_argument('--teamname', action='store',type=str,default='KISMED')
+    parser.add_argument('--training_name', action='store',type=str,default='train')
+    
+    
+    
 
     args = parser.parse_args()
     
     current_time = datetime.datetime.now()
     F1,F1_mult,Conf_Matrix = score(args.test_dir)
-    with open('teamname.txt') as team_file:
-        teamname = team_file.readline()[:-1]
+    teamname = args.teamname
+    training_name = args.training_name
         
     filename =   args.output_dir + teamname + '.csv'  
     if not os.path.exists(filename):
         with open(filename, mode='w', newline='') as scores_file:
             scores_writer = csv.writer(scores_file, delimiter=';')
-            scores_writer.writerow(['team_name','date_time','dataset','F1_score','multilabel_score'])
+            scores_writer.writerow(['team_name','date_time','training','dataset','F1_score','multilabel_score'])
     
     with open(filename, mode='+a', newline='') as scores_file:
         scores_writer = csv.writer(scores_file, delimiter=';')
         
-        scores_writer.writerow([teamname,str(current_time), args.data_set, F1, F1_mult] )
+        scores_writer.writerow([teamname,str(current_time),training_name, args.data_set, F1, F1_mult] )
     if not os.path.exists(args.output_dir + 'Confusion/'):
         os.mkdir(args.output_dir + 'Confusion/')
     with open(args.output_dir + 'Confusion/' +teamname+str(current_time.date())+'_'+ str(current_time.hour)+'_'+str(current_time.minute) + '.csv',mode='w',newline='') as matrix_file:

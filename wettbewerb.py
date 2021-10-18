@@ -57,9 +57,11 @@ def load_references(folder: str = '../training') -> Tuple[List[np.ndarray], List
     return ecg_leads, ecg_labels, fs, ecg_names
 
 
+
+
 ### Achtung! Diese Funktion nicht veraendern.
 
-def save_predictions(predictions: List[Tuple[str, str]]) -> None:
+def save_predictions(predictions: List[Tuple[str, str]], folder: str=None) -> None:
     """
     Funktion speichert the gegebenen predictions in eine CSV-Datei mit dem name PREDICTIONS.csv
     Parameters
@@ -68,21 +70,30 @@ def save_predictions(predictions: List[Tuple[str, str]]) -> None:
         List aus Tuplen wobei jedes Tuple den Name der Datei und das vorhergesagte label ('N','A','O','~') enthaelt
         Beispiel [('train_ecg_03183.mat', 'N'), ('train_ecg_03184.mat', "~"), ('train_ecg_03185.mat', 'A'),
                   ('train_ecg_03186.mat', 'N'), ('train_ecg_03187.mat', 'O')]
+	folder : str
+		Speicherort der predictions
     Returns
     -------
     None.
-    """
-    # Check Parameter
+
+    """    
+	# Check Parameter
     assert isinstance(predictions, list), \
         "Parameter predictions muss eine Liste sein aber {} gegenen.".format(type(predictions))
     assert len(predictions) > 0, 'Parameter predictions muss eine nicht leere Liste sein.'
     assert isinstance(predictions[0], tuple), \
         "Elemente der Liste predictions muss ein Tuple sein aber {} gegenen.".format(type(predictions[0]))
+	
+    if folder==None:
+        file = "PREDICTIONS.csv"
+    else:
+        file = os.path.joint(folder, "PREDICTIONS.csv")
     # Check ob Datei schon existiert wenn ja loesche Datei
-    if os.path.exists('PREDICTIONS.csv'):
-        os.remove('PREDICTIONS.csv')
-    # Generiere neue Datei
-    with open('PREDICTIONS.csv', mode='w', newline='') as predictions_file:
+    if os.path.exists(file):
+        os.remove(file)
+
+    with open(file, mode='w', newline='') as predictions_file:
+
         # Init CSV writer um Datei zu beschreiben
         predictions_writer = csv.writer(predictions_file, delimiter=',')
         # Iteriere über jede prediction
