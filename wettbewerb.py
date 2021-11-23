@@ -87,7 +87,7 @@ def save_predictions(predictions: List[Tuple[str, str]], folder: str=None) -> No
     if folder==None:
         file = "PREDICTIONS.csv"
     else:
-        file = os.path.joint(folder, "PREDICTIONS.csv")
+        file = os.path.join(folder, "PREDICTIONS.csv")
     # Check ob Datei schon existiert wenn ja loesche Datei
     if os.path.exists(file):
         os.remove(file)
