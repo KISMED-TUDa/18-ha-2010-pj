@@ -57,7 +57,9 @@ def wki_evaluate(data_folder,team_id,datasets_string,model_variants,model_name,o
         variant_bools=[False]
     else:
         variant_bools = [False,True]
-        
+    
+    
+    print("Got following parameters", "data_folder=",data_folder,", team_id=",team_id,", datasets_string=",datasets_string,", model_variants=",model_variants,", model_name=", model_name)    
     for is_binary_classifier in variant_bools:    
         
         model_id = db.put_model(team_id,model_name,is_binary_classifier,parameter_dict=None)
