@@ -9,6 +9,8 @@ Demo-Code zum Projektseminar "Wettbewerb künstliche Intelligenz in der Medizin"
 
 ## Wichtig!
 
+Bitte achtet bei der Abgabe darauf, dass alle von uns gestellten Dateien auf dem Top-Level des Repositories liegen. Testet die Funktionsfähigkeit eures Codes mit dem Skript predict_pretrained.py. 
+
 Die Dateien 
 - predict_pretrained.py
 - wettbewerb.py
