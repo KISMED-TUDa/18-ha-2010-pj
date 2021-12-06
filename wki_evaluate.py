@@ -103,8 +103,9 @@ if __name__=='__main__':
     parser.add_argument('team_id', action='store',type=int)
     parser.add_argument('--datasets', action='store',type=str,default='1,2')
     parser.add_argument('--model_variants', action='store',type=str,default='multi')
-    parser.add_argument('--model_name', action='store',type=str,default='dummy')        
+    parser.add_argument('--model_name', action='store',type=str,default='dummy') 
+    parser.add_argument('--output_file', action='store',type=str,default='error_out')        
 
     args = parser.parse_args()
     
-    wki_evaluate(args.data_folder,args.team_id,args.datasets,args.model_variants,args.model_name,output_file='error_out',parameter_dict=None)               
+    wki_evaluate(args.data_folder,args.team_id,args.datasets,args.model_variants,args.model_name,output_file=args.output_file,parameter_dict=None)               
