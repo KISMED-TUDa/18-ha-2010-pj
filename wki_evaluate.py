@@ -53,7 +53,7 @@ def wki_evaluate(data_folder,team_id,datasets_string,model_variants,model_name,o
     
     if model_variants == 'binary':
         variant_bools=[True]
-    if model_variants == 'multi':
+    elif model_variants == 'multi':
         variant_bools=[False]
     else:
         variant_bools = [False,True]
