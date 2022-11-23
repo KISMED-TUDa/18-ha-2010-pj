@@ -53,7 +53,7 @@ xf = fftfreq(N, T)[:N//2];                                # Initialisierung des 
 
 
 ### Wenn Testlauf, dann können in range(102,6000) Messungen gelöscht werden, welche dann nicht mehr verarbietet werden.
-ecg_leads = np.delete(ecg_leads, range(102,6000))
+#ecg_leads = np.delete(ecg_leads, range(102,6000))
 
 
 ### Datenverarbeitung für jede Messung. Die Ergebnisse werden in den Arrays der Feature-List gespeichert.
