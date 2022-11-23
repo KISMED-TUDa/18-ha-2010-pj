@@ -14,6 +14,7 @@ from ecgdetectors import Detectors
 import os
 from scipy.fft import fft, fftfreq
 from wettbewerb import load_references
+import math
 
 ### if __name__ == '__main__':  # bei multiprocessing auf Windows notwendig
 
@@ -40,7 +41,7 @@ max_amplitude = np.array([])                              # Initialisierung Maxi
 relativ_lowPass = np.array([])                            # Initialisierung Relativer Anteil des Niederfrequenzbandes an dem Gesamtspektrum.
 relativ_highPass = np.array([])                           # Initialisierung Relativer Anteil des Mittelfrequenzbandes an dem Gesamtspektrum.
 relativ_bandPass = np.array([])                           # Initialisierung Relativer Anteil des Hochfrequenzbandes an dem Gesamtspektrum.
-
+rmssd = np.array([])                                      # Initialisierung des RMSSD Wertes
 
 ### FFT Initialisierung
 N = ecg_leads[1].size                                     # Anzahl der Messungen (9000 in 30s, für jede Messung gleich, daher nur einemal berechnet).
@@ -51,9 +52,8 @@ t = np.linspace(0.0, N*T, N, endpoint=False);             # Initialisierung des 
 xf = fftfreq(N, T)[:N//2];                                # Initialisierung des Frequenzbereiches (für jede Messung gleich, daher nur einemal berechnet).
 
 
-### Wenn Testlauf, dann können in Index Messungen gelöscht werden, welche dann nicht mehr verarbietet werden.
-#index = range(102,6000)
-#ecg_leads = np.delete(ecg_leads, index)
+### Wenn Testlauf, dann können in range(102,6000) Messungen gelöscht werden, welche dann nicht mehr verarbietet werden.
+ecg_leads = np.delete(ecg_leads, range(102,6000))
 
 
 ### Datenverarbeitung für jede Messung. Die Ergebnisse werden in den Arrays der Feature-List gespeichert.
@@ -63,6 +63,7 @@ for idx, ecg_lead in enumerate(ecg_leads):
     r_peaks = detectors.hamilton_detector(ecg_lead)       # Detektion der QRS-Komplexe.
     peak_to_peak_diff = (np.diff(r_peaks))                # Abstände der R-Spitzen.
     sdnn_value = np.std(np.diff(r_peaks)/fs*1000)         # Berechnung der Standardabweichung der Schlag-zu-Schlag Intervalle (SDNN) in Millisekunden.
+    
 
     ### Frequenzbereich    
     y = ecg_lead                                          # Laden des Messung
@@ -95,13 +96,28 @@ for idx, ecg_lead in enumerate(ecg_leads):
     relativ_bandPass = np.append(relativ_bandPass, np.sum(yf_bandPass)/normier_faktor)
     relativ_highPass = np.append(relativ_highPass, np.sum(yf_highPass)/normier_faktor)
 
-    ### Features:       Maximaler Ausschlag/Amplitude einer Messung.
+    ### Feature:       Maximaler Ausschlag/Amplitude einer Messung.
     max_amplitude = np.append(max_amplitude, max(r_yf))
 
     ### Features:       R-Spitzen Abstand und Anzahl einer Messung.
     peaks_per_measure = np.append(peaks_per_measure, len(r_peaks))
     peak_diff_mean = np.append(peak_diff_mean, np.mean(peak_to_peak_diff))
     peak_diff_median = np.append(peak_diff_median, np.median(peak_to_peak_diff))
+
+    ### Feature:        Anzahl an Spektrum-Spitzen im Niederfrequenzband.
+    max_peak_sp = max(r_yf)                               # Ermittlung der höchsten Spitze.
+    peaks_low = np.array([])                    
+    for i in range(0, 4500):                   # Alle Spitzen übernehmen welche 80% der  höchsten Spitze erreichen.
+        if r_yf[i] > 0.8*max_peak_sp:
+            peaks_low = np.append(peaks_low, r_yf[i])
+    peaks_per_lowPass = np.append(peaks_per_lowPass, peaks_low.size)  # Ermittlung der Anzahl der Spitzen mit mindesten 80% der maximal Spitze.
+   
+    ### Feature:        RMSSD
+    n = peak_to_peak_diff.size                 # Anzahl an R-Spitzen-Abständen
+    sum = 0.0
+    for i in range(0, n-2):                    # Berechnung des RMSSD-Wertes
+        sum += (peak_to_peak_diff[i + 1] - peak_to_peak_diff[i])**2
+    rmssd = np.append(rmssd, math.sqrt(1/(n-1)*sum))
 
     ### Label-Erkennung und Zuweisung zu den Features.
     if ecg_labels[idx]=='N':
@@ -119,7 +135,7 @@ for idx, ecg_lead in enumerate(ecg_leads):
 
 
 ## Erstellen der Feature-Matrix inklusive der Labels.
-features = np.array([[labels], [peak_diff_mean], [peak_diff_median], [peaks_per_measure], [peaks_per_lowPass], [max_amplitude], [relativ_lowPass], [relativ_highPass], [relativ_bandPass]])
+features = np.array([[labels], [peak_diff_mean], [peak_diff_median], [peaks_per_measure], [peaks_per_lowPass], [max_amplitude], [relativ_lowPass], [relativ_highPass], [relativ_bandPass], [rmssd]])
 
 
 ## Erstellen eines Diagrammes.
